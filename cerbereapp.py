@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
 
 from flask import Flask, session, redirect, url_for, request, render_template, escape
+import configparser
+import pymysql
+
+config = configparser.ConfigParser()
+config.read('config/db-config.ini')
+
 app = Flask(__name__)
 app.secret_key = 'justasimplerandomstring'
 
+## Login
+## ==========
 @app.route('/')
-#Landing page
 def index():
     #return '<html><body><h1>Hello <em>world</em></h1></body></html>'
     #return render_template('index.html')
     if 'username' in session:
         username=session['username']
-        return render_template("index.html")
-        return 'Logged in as ' + username + '</br>' + \
-        "<b><a href='/logout'>click here to log out</a></b>"
-    return "You are not logged in <br><a href='/login'></b>" + \
-"click here to login</b></a>"
+        return render_template("index.html", username=username)
+        #return 'Logged in as ' + username + "</br> <b><a href='/logout'>click here to log out</a></b>"
+    return "You are not logged in <br><a href='/login'></b> click here to login</b></a>"
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

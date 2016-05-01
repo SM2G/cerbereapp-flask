@@ -1,6 +1,5 @@
-<!doctype html>
-<html>
-<body>
+{% extends "base.html" %}
+{% block content %}
   <h1>Hello <em>world</em></h1>
   <p>Welcome {{name}}!</p>
   {% if marks > 50 %}
@@ -8,5 +7,4 @@
   {% else %}
   <h2>Sorry, you failed</h2>
   {% endif %}
-</body>
-</html>
+{% endblock %}

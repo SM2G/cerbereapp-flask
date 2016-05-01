@@ -1,6 +1,5 @@
-<! doctype html>
-<html>
-<body>
+{% extends "base.html" %}
+{% block content %}
   <table border="1">
     {% for key, value in result.items() %}
     <tr>
@@ -9,5 +8,4 @@
     </tr>
     {% endfor %}
 </table>
-</body>
-</html>
+{% endblock %}
