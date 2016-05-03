@@ -7,3 +7,4 @@
 # Config files
 /config
 database-init.sql
+config.py

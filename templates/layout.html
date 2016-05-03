@@ -3,7 +3,7 @@
   {% if title %}
   <title>{{ title }} - microblog</title>
   {% else %}
-  <title>Welcome to microblog</title>
+  <title>CerbereApp</title>
   {% endif %}
 
   <!-- Latest compiled and minified CSS -->
@@ -58,7 +58,15 @@
       </div>
     </div>
   </nav>
-  
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  {% for message in messages %}
+  {{ message }}
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+
   {% block content %}{% endblock %}
 
 </body>

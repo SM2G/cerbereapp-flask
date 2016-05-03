@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/env python
 
 from flask import Flask, session, redirect, url_for, request, render_template, escape
+from flask.ext.sqlalchemy import SQLAlchemy
 import configparser
 import pymysql
 
+# initialization
 config = configparser.ConfigParser()
 config.read('config/db-config.ini')
+
+actual_env = 'DEV'
 
 app = Flask(__name__)
 app.secret_key = 'justasimplerandomstring'
@@ -39,10 +44,10 @@ def logout():
 @app.route('/dashboard')
 #Graph dashboard
 
-@app.route('/account')
+@app.route('/employees')
 #Personnal account informations
 
-@app.route('/new_session')
+@app.route('/profiles')
 #Initialize a new session
 
 @app.route('/sessions')
