@@ -1,31 +1,27 @@
 # -*- coding: utf-8 -*-
-#!/usr/bin/env python
 
-from flask import Flask, session, redirect, url_for, request, render_template, escape
-from flask.ext.sqlalchemy import SQLAlchemy
-import configparser
-import pymysql
+from cerbereapp import app
+from flask import render_template
+from flask_login import login_required, current_user
 
-# initialization
-config = configparser.ConfigParser()
-config.read('config/db-config.ini')
-
-actual_env = 'DEV'
-
-app = Flask(__name__)
-app.secret_key = 'justasimplerandomstring'
-
-## Login
-## ==========
 @app.route('/')
 def index():
-    #return '<html><body><h1>Hello <em>world</em></h1></body></html>'
-    #return render_template('index.html')
-    if 'username' in session:
-        username=session['username']
-        return render_template("index.html", username=username)
-        #return 'Logged in as ' + username + "</br> <b><a href='/logout'>click here to log out</a></b>"
-    return "You are not logged in <br><a href='/login'></b> click here to login</b></a>"
+    return render_template("index.html")
+
+@app.route('/dashboard')
+@login_required
+def account():
+    return render_template("account.html")
+
+#@app.route('/')
+#def index():
+#    #return '<html><body><h1>Hello <em>world</em></h1></body></html>'
+#    #return render_template('index.html')
+#    if 'username' in session:
+#        username=session['username']
+#        return render_template("index.html", username=username)
+#        #return 'Logged in as ' + username + "</br> <b><a href='/logout'>click here to log out</a></b>"
+#    return "You are not logged in <br><a href='/login'></b> click here to login</b></a>"
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -75,7 +71,3 @@ def result():
 @app.route('/success/<name>')
 def success(name):
     return 'Welcome %s!' % name
-
-
-if __name__=='__main__':
-    app.run(debug=True)

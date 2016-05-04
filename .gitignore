@@ -5,6 +5,6 @@
 /__pycache__
 
 # Config files
+/instance
 /config
-database-init.sql
 config.py

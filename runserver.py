@@ -1,2 +1,8 @@
-from app import app
-app.run(debug=True)
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import os
+from cerbereapp import app
+
+if __name__ == '__main__':
+    port = int(os.environ.get("PORT", 5000))
+    app.run('0.0.0.0', port=port)
