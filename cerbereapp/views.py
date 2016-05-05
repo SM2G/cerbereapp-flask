@@ -8,6 +8,9 @@ from flask_wtf import Form
 from wtforms import StringField
 from wtforms.validators import DataRequired
 
+
+## Routes
+## ==================================================
 @app.route('/')
 def index():
     return render_template("index.html")
@@ -43,16 +46,21 @@ def logout():
 
 
 @app.route('/dashboard')
-#Graph dashboard
+@login_required
+def dashboard():
+    return render_template('student.html')
 
 @app.route('/employees')
-#Personnal account informations
+def employees():
+    return render_template('student.html')
 
 @app.route('/profiles')
-#Initialize a new session
+def profiles():
+    return render_template('student.html')
 
 @app.route('/sessions')
-#Review all past sessions (mostly read only)
+def sessions():
+    return render_template('student.html')
 
 @app.route('/students')
 def students():
@@ -76,3 +84,15 @@ def result():
 @app.route('/success/<name>')
 def success(name):
     return 'Welcome %s!' % name
+
+
+## Errors
+## ==================================================
+@app.errorhandler(500)
+def internal_error(error):
+    #db_session.rollback()
+    return render_template('errors/500.html'), 500
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('errors/404.html'), 404

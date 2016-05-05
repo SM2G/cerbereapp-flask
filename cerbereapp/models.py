@@ -1,58 +1,57 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-from . import db
+from sqlalchemy import Column, Integer, String
+from cerbereapp.database import Base
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nickname = db.Column(db.String(64), index=True, unique=True)
-    email = db.Column(db.String(120), index=True, unique=True)
+## Models
+## ==================================================
+
+class User(Base):
+    __tablename__ = 'Users'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(120), unique=True)
+    email = Column(String(120), unique=True)
+    password = Column(String(30))
+    def __init__(self, name=None, password=None):
+        self.name = name
+        self.password = password
 
 
-CREATE TABLE users(
-  user_id INTEGER NOT NULL AUTO_INCREMENT,
-  username VARCHAR(50),
-  password VARCHAR(50) NOT NULL,
-  email VARCHAR(100) NOT NULL,
-  account_type INTEGER NOT NULL
-)
+class AccountType(Base):
+    __tablename__ = 'account_types'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(50), unique=True)
 
-class AccountType(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(50), )
 
-CREATE TABLE account_types(
-  account_type_id INTEGER NOT NULL AUTO_INCREMENT,
-  account_type_name VARCHAR(50) NOT NULL,
-  emp_limit INTEGER NOT NULL,
-  adv_features INTEGER NOT NULL
-)
+class Employee(Base):
+    __tablename__ = 'employees'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer)
+    first_name = Column(String(50))
+    last_name = Column(String(50))
+    profile_id = Column(Integer)
 
-CREATE TABLE employees(
-  employee_id INTEGER NOT NULL AUTO_INCREMENT,
-  user_id INTEGER NOT NULL,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
-  profile_id INTEGER NOT NULL
-)
 
-CREATE TABLE profiles(
-  profile_id INTEGER NOT NULL AUTO_INCREMENT,
-  user_id INTEGER NOT NULL,
-  profile_name VARCHAR(50) NOT NULL
-)
+class Profile(Base):
+    __tablename__ = 'profiles'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer)
+    profile_name = Column(String(50))
 
-CREATE TABLE document_models(
-  document_model_id INTEGER NOT NULL AUTO_INCREMENT,
-  user_id INTEGER NOT NULL,
-  document_model_name VARCHAR(50) NOT NULL,
-  warning_days INTEGER NOT NULL,
-  critical_days INTEGER NOT NULL
-)
 
-CREATE TABLE documents(
-  document_id INTEGER NOT NULL AUTO_INCREMENT,
-  employee_id INTEGER NOT NULL,
-  expiration_date NOT NULL,
-  document_scan BLOB
-)
+class DocumentModel(Base):
+    __tablename__ = 'document_models'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer)
+    document_model_name = Column(String(50))
+    warning_days = Column(Integer)
+    critical_days = Column(Integer)
+
+
+class Document(Base):
+    __tablename__ = 'documents'
+    id = Column(Integer, primary_key=True)
+    employee_id = Column(Integer)
+    expiration_date = Column(String(50))
+    document_scan = Column(Integer)

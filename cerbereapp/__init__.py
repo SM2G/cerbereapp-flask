@@ -2,18 +2,13 @@
 #!/usr/bin/env python
 
 from flask import Flask, session, redirect, url_for, request, render_template, escape
-from flask.ext.sqlalchemy import SQLAlchemy
 import flask.ext.login as flask_login
 import configparser
-import pymysql
-
 
 app = Flask(__name__, instance_relative_config=True)
 
 import cerbereapp.views
-
-config = configparser.ConfigParser()
-config.read('instance/db-config.ini')
+import cerbereapp.database
 
 app.config.from_object('config')
 app.config.from_pyfile('config.py')
