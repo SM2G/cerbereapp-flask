@@ -3,6 +3,7 @@
 
 # Cache
 /__pycache__
+/cerbereapp/__pycache__/
 
 # Config files
 /instance

@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from cerbereapp import app
-from flask import render_template
+from flask import render_template, redirect, url_for, request, render_template, escape, flash
 from flask_login import login_required, current_user
+
+from flask_wtf import Form
+from wtforms import StringField
+from wtforms.validators import DataRequired
 
 @app.route('/')
 def index():
@@ -29,6 +33,7 @@ def login():
         session['username'] = request.form['username']
         return redirect(url_for('index'))
     return render_template("login.html")
+
 
 @app.route('/logout')
 def logout():
