@@ -19,6 +19,11 @@ app.secret_key = 'justasimplerandomstring'
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
+from cerbereapp.database import db_session
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 if __name__=='__main__':
     app.run

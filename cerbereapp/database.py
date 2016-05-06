@@ -21,12 +21,12 @@ engine = create_engine("mysql+pymysql://" + config['DEV']['user']
                         + "/"
                         + config['DEV']['db'], encoding='utf8', echo = True)
 
-connection = pymysql.connect(host = config['DEV']['host'],
-                             user = config['DEV']['user'],
-                             password = config['DEV']['password'],
-                             db = config['DEV']['db'],
-                             charset = 'utf8mb4',
-                             cursorclass = pymysql.cursors.DictCursor)
+#connection = pymysql.connect(host = config['DEV']['host'],
+#                             user = config['DEV']['user'],
+#                             password = config['DEV']['password'],
+#                             db = config['DEV']['db'],
+#                             charset = 'utf8mb4',
+#                             cursorclass = pymysql.cursors.DictCursor)
 
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,

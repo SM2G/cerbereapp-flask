@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/slate/bootstrap.min.css" integrity="sha384-X9JiR5BtXUXiV6R3XuMyVGefFyy+18PHpBwaMfteb/vd2RrK6Gt4KPenkQyWLxCC" crossorigin="anonymous">
 
   <!-- Latest compiled and minified JavaScript -->
+  <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 </head>
@@ -64,24 +65,24 @@
     <div class="container">
       <div class="row">
       {% for category, message in messages %}
-        {% if message['category'] == 'success' %}
-          <div class="alert alert-dismissible alert-success">
-        {% elif message['category'] == 'warning' %}
-          <div class="alert alert-dismissible alert-warning">
-        {% elif message['category'] == 'danger' %}
-          <div class="alert alert-dismissible alert-danger">
+        {% if category == 'success' %}
+          <div class="alert alert-dismissible alert-{{ category }}">
+        {% elif category == 'warning' %}
+          <div class="alert alert-dismissible alert-{{ category }}">
+        {% elif category == 'danger' %}
+          <div class="alert alert-dismissible alert-{{ category }}">
         {% elif category == 'info' %}
           <div class="alert alert-dismissible alert-{{ category }}">
         {% endif %}
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <strong>Heads up!</strong> {{ message }}
+          <h4>{{ category }}</h4>
+          <p>{{ message }}</p>
       </div>
       {% endfor %}
       </div>
     </div>
     {% endif %}
     {% endwith %}
-
 
   {% block content %}{% endblock %}
 
