@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 
 from flask import Flask
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
@@ -21,13 +21,6 @@ engine = create_engine("mysql+pymysql://" + config['DEV']['user']
                         + "/"
                         + config['DEV']['db'], encoding='utf8', echo = True)
 
-#connection = pymysql.connect(host = config['DEV']['host'],
-#                             user = config['DEV']['user'],
-#                             password = config['DEV']['password'],
-#                             db = config['DEV']['db'],
-#                             charset = 'utf8mb4',
-#                             cursorclass = pymysql.cursors.DictCursor)
-
 db_session = scoped_session(sessionmaker(autocommit=False,
                                          autoflush=False,
                                          bind=engine))
@@ -38,6 +31,18 @@ Base.query = db_session.query_property()
 def shutdown_session(exception=None):
     db_session.remove()
 
+
+## Index naming convention
+## ==================================================
+convention = {
+  "ix": 'ix_%(column_0_label)s',
+  "uq": "uq_%(table_name)s_%(column_0_name)s",
+  "ck": "ck_%(table_name)s_%(constraint_name)s",
+  "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+  "pk": "pk_%(table_name)s"
+}
+
+metadata = MetaData(naming_convention=convention)
 
 # Create tables.
 def init_db():

@@ -15,11 +15,6 @@ from wtforms.validators import DataRequired
 def index():
     return render_template("index.html")
 
-@app.route('/dashboard')
-@login_required
-def account():
-    return render_template("account.html")
-
 #@app.route('/')
 #def index():
 #    #return '<html><body><h1>Hello <em>world</em></h1></body></html>'
@@ -81,7 +76,13 @@ def result():
     dict={'Olga':55,'Anya':24,'Tania':26,'Ivana':32,'Sonia':28,'Pussy':35,'Plenty':44}
     return render_template('table.html', result=dict)
 
-@app.route('/success/<name>')
+@app.route('/account/<name>')
+@login_required
+def account(name):
+    return 'Welcome %s!' % name
+
+@app.route('/employee/<name>')
+@login_required
 def success(name):
     return 'Welcome %s!' % name
 
