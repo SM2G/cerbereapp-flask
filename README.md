@@ -34,6 +34,7 @@ $ python runserver
 + Add/remove profiles
 + Add/remove document models
 + Dashboard
++ E-mail sending
 + Upload document scans
 + Create guest accounts
 + Advanced guest accounts
