@@ -1,13 +1,45 @@
 # -*- coding: utf-8 -*-
-
 from cerbereapp import app
-from flask import render_template, redirect, url_for, request, render_template, escape, flash
-from flask_login import login_required, current_user
+from flask import render_template, redirect, url_for, request, render_template\
+                , escape, flash, session
 
-from flask_wtf import Form
-from wtforms import StringField
-from wtforms.validators import DataRequired
+#from flask_wtf import Form
+#from wtforms import StringField
+#from wtforms.validators import DataRequired
 from cerbereapp.forms import *
+from functools import wraps
+
+import cerbereapp.database as database
+import cerbereapp.models as models
+
+from flask import Flask,session, request, flash, url_for, redirect, render_template, abort ,g
+from flask.ext.login import login_user , logout_user , current_user , login_required
+
+import flask.ext.login as flask_login
+from flask_login import login_required, current_user, LoginManager
+
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+@login_manager.user_loader
+def load_user(id):
+    try:
+        return models.User.get(models.User.id == id)
+    except:
+        return None
+
+## Login Decorator
+## ==================================================
+#def login_required(f):
+#    @wraps(f)
+#    def wrap(*args, **kwargs):
+#        if 'logged_in' in session:
+#            return f(*args, **kwargs)
+#        else:
+#            flash('You need to login first', category='info')
+#            return redirect(url_for('login'))
+#    return wraps
 
 ## Routes
 ## ==================================================
@@ -25,40 +57,51 @@ def index():
 #        #return 'Logged in as ' + username + "</br> <b><a href='/logout'>click here to log out</a></b>"
 #    return "You are not logged in <br><a href='/login'></b> click here to login</b></a>"
 
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    email = request.form['email']
+    password = request.form['password']
+    registered_user = models.User.query.filter_by(email=email,password=password).first()
+    if registered_user is None:
+        flash('Username or Password is invalid' , 'error')
+        return redirect(url_for('login'))
+    login_user(registered_user)
+    flash('Logged in successfully')
+    return redirect(request.args.get('next') or url_for('index'))
+
 #@app.route('/login', methods=['GET', 'POST'])
 #def login():
+#    error = None
 #    if request.method == 'POST':
-#        session['username'] = request.form['username']
-#        return redirect(url_for('index'))
-#    return render_template("login.html")
-
-@app.route('/login')
-def login():
-    form = LoginForm(request.form)
-    return render_template('login.html', form=form)
-    #flash('Logged in successfully.', category='success')
-
-    #next = flask.request.args.get('next')
-    # next_is_valid should check if the user has valid
-    # permission to access the `next` url
-    #if not next_is_valid(next):
-    #    return flask.abort(400)
-
-    #    return flask.redirect(next or flask.url_for('index'))
-    #return flask.render_template('login.html', form=form)
+#        if request.form['email'] != 'admin@admin.com' or request.form['password'] != 'admin':
+#            error = "Invalid credentials, please try again"
+#        else:
+#            session['logged_in'] = True
+#            flash('Successfully logged in!', category='success')
+#            return redirect(url_for('dashboard'))
+#    return render_template('login.html', error=error)
 
 
 @app.route('/logout')
 def logout():
-    # remove username from session
-    session.pop('username', None)
+    session.pop('logged_in', None)
+    flash('Logged out.', category="info")
     return redirect(url_for('index'))
 
 
-@app.route('/signup')
+
+@app.route('/signup' , methods=['GET','POST'])
 def signup():
-    # remove username from session
-    return redirect(url_for("signup.html"))
+    if request.method == 'GET':
+        return render_template('signup.html')
+    user = database.User(request.form['username'] , request.form['password'],request.form['email'])
+    db.session.add(user)
+    db.session.commit()
+    flash('User successfully registered')
+    return redirect(url_for('login'))
 
 @app.route('/dashboard')
 @login_required

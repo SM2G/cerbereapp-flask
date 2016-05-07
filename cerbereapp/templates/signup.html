@@ -2,11 +2,13 @@
 {% block content %}
 <div class="container">
   <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+    <h3 class="form-heading">Signup <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
     <form action="" method="post">
-      <p><input type=text name=email class="form-control" id="inputEmail" placeholder="your@email.com" type="text">
-      <p><input type=text name=password1 class="form-control" id="inputPass1" placeholder="password" type="password">
-      <p><input type=text name=password2 class="form-control" id="inputPass2" placeholder="password" type="password">
-      <p><input type=submit value=Submit  class="btn btn-primary">
+      <p><input class="form-control" type="text" name=username placeholder="Username" required="True" autofocus="True"></p>
+      <p><input class="form-control" type="text" name=email placeholder="your@mail.com" required="True"></p>
+      <p><input class="form-control" type="password" name=password placeholder="Password" required="True"></p>
+      <p class="text-right"><input class="btn btn-primary" type=submit value=Signup></p>
     </form>
   </div>
 </div>
