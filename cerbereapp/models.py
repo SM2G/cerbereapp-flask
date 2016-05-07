@@ -13,9 +13,10 @@ class User(Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
-    username = Column(String(50), unique=True)
     email = Column(String(120), unique=True)
     password = Column(String(50), nullable=False)
+    account_type = Column(Integer, ForeignKey("account_types.id"), nullable=False)
+    username = Column(String(50), unique=True)
     def __init__(self, name=None, password=None):
         self.username = username
         self.password = password

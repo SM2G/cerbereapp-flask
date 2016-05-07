@@ -21,7 +21,7 @@ class SignupForm(Form):
 
 
 class LoginForm(Form):
-    name = TextField('Username', [DataRequired()])
+    email = TextField('Email', [DataRequired()])
     password = PasswordField('Password', [DataRequired()])
 
 

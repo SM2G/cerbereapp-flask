@@ -53,7 +53,11 @@ def init_db():
     Base.metadata.create_all(bind=engine)
 
 def seed_db():
-    from cerbereapp.database import db_session
-    from cerbereapp.models import User
+    """
+    Injects sample data into the database.
+
+    Use this to populate the database with some sample data.
+    """
+    import cerbereapp.models
     con = engine.connect()
-    con.execute(users.insert(), name='admin', email='admin@localhost')
+    con.execute(users.insert(), username='admin', email='admin@cerbereapp.com', password='admin')

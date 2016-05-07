@@ -8,14 +8,28 @@
   </div>
   <div class="row">
     <div class="col-md-6 col-md-offset-3">
-      <h2>Login</h2>
+      <h3 class="form-heading">Login <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
       <form action="" method="post">
-        <p><input class="form-control" type=text name=email placeholder="your@mail.com"></p>
-        <p><input class="form-control" type="password" name=password placeholder="YourPassword"></p>
+        <!--<p><input class="form-control" type=text name=email placeholder="your@mail.com"></p>-->
+        <p>{{ form.email(class_ = 'form-control first-input', placeholder = form.email.label.text, required = true, autofocus = true) }}</p>
+        <!--<p><input class="form-control" type="password" name=password placeholder="Password"></p>-->
+        {{ form.password(class_ = 'form-control last-input', placeholder = form.password.label.text, required = true) }}
         <p class="text-right"><input class="btn btn-primary" type=submit value=Login></p>
         <p class="text-right"><a href="#" class="btn btn-default">Forgotten password</a></p>
+        <p class="text-right"><a href="{{ url_for('signup') }}" class="btn btn-default">Signup</a></p>
       </form>
     </div>
   </div>
 </div>
 {% endblock %}
+
+
+
+
+  <!--<form method="post" class="form">
+    {{ form.name(class_ = 'form-control first-input', placeholder = form.name.label.text, required = true, autofocus = true) }}
+    {{ form.password(class_ = 'form-control last-input', placeholder = form.password.label.text, required = true) }}
+    <p class="pull-left"><a href="{{ url_for('forgot') }}">Forgot Password?</a></p>
+    <input type="submit" value="Submit" class="btn btn-primary btn-lg btn-block" disabled>
+    <p>You must add database as well as Flask-Login to enable user management. See the <a href="http://www.realpython.com">Real Python</a> course for more info!</p>
+  </form>-->
