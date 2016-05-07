@@ -51,3 +51,9 @@ def init_db():
     # you will have to import them first before calling init_db()
     import cerbereapp.models
     Base.metadata.create_all(bind=engine)
+
+def seed_db():
+    from cerbereapp.database import db_session
+    from cerbereapp.models import User
+    con = engine.connect()
+    con.execute(users.insert(), name='admin', email='admin@localhost')

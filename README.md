@@ -30,11 +30,13 @@ $ python runserver
 + Mysql database support
 + Account managment
 + Encrypted password storage
-+ Add/remove employees
-+ Add/remove profiles
-+ Add/remove document models
-+ Dashboard
++ Add/remove/manage document models
++ Add/remove/manage profiles
++ Add/remove/manage employees
++ Add/remove/manage actual documents
++ Design a pretty Dashboard
 + E-mail sending
 + Upload document scans
++ Use Alembic for database migrations
 + Create guest accounts
 + Advanced guest accounts
