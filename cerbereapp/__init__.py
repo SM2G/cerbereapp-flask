@@ -6,10 +6,10 @@ import configparser
 
 app = Flask(__name__, instance_relative_config=True)
 
-import cerbereapp.views
 import cerbereapp.database
-import cerbereapp.models
 import cerbereapp.forms
+import cerbereapp.models
+import cerbereapp.views
 
 app.config.from_object('config')
 app.config.from_pyfile('config.py')
@@ -21,6 +21,3 @@ from cerbereapp.database import db_session
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
-
-#if __name__=='__main__':
-#    app.run

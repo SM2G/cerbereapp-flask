@@ -3,7 +3,11 @@
 
 from sqlalchemy import Column, Integer, String, Date, DateTime, Binary\
                     , PrimaryKeyConstraint, ForeignKeyConstraint, ForeignKey
-from flask.ext.login import UserMixin
+
+import flask.ext.login as flask_login
+from flask_login import UserMixin, current_user, login_user , logout_user \
+                        , LoginManager
+
 from cerbereapp.database import Base
 
 
@@ -20,11 +24,18 @@ class User(Base, UserMixin):
     username = Column(String(50), unique=True)
     registered_on = Column('registered_on' , DateTime)
 
-    def __init__(self , username ,password , email):
+    def __init__(self , id, username ,password , email, registered_on):
+        self.id = id
         self.username = username
-        self.password = password
+        self.set_password(password)
         self.email = email
         self.registered_on = datetime.utcnow()
+
+    def set_password(self , password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self , password):
+        return check_password_hash(self.password , password)
 
     def is_authenticated(self):
         return True
@@ -36,7 +47,8 @@ class User(Base, UserMixin):
         return False
 
     def get_id(self):
-        return str(self.id)
+        return self.id
+        #return self.username
 
     def __repr__(self):
         return '<User %r>' % (self.username)

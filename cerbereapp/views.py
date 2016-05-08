@@ -1,36 +1,45 @@
 # -*- coding: utf-8 -*-
 from cerbereapp import app
 from flask import render_template, redirect, url_for, request, render_template\
-                , escape, flash, session
+                , escape, flash, session, Flask, abort, g
 
 #from flask_wtf import Form
 #from wtforms import StringField
 #from wtforms.validators import DataRequired
 from cerbereapp.forms import *
 from functools import wraps
-
-import cerbereapp.database as database
-import cerbereapp.models as models
-
-from flask import Flask,session, request, flash, url_for, redirect, render_template, abort ,g
-from flask.ext.login import login_user , logout_user , current_user , login_required
+from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import flask.ext.login as flask_login
-from flask_login import login_required, current_user, LoginManager
+from flask_login import login_required, current_user, login_user , logout_user \
+                        , LoginManager
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-@login_manager.user_loader
-def load_user(id):
-    try:
-        return models.User.get(models.User.id == id)
-    except:
-        return None
+import cerbereapp.database as database
+import cerbereapp.models as models
 
 ## Login Decorator
 ## ==================================================
+
+@login_manager.user_loader
+def load_user(id):
+    """Given *user_id*, return the associated User object.
+
+    :param unicode user_id: user_id (email) user to retrieve
+    """
+    return  models.User.query.get(id)
+    #return models.User.get(models.User.id == id)
+    #except:
+    #    return None
+
+@app.before_request
+def before_request():
+    g.user = current_user
+
 #def login_required(f):
 #    @wraps(f)
 #    def wrap(*args, **kwargs):
@@ -66,11 +75,11 @@ def login():
     password = request.form['password']
     registered_user = models.User.query.filter_by(email=email,password=password).first()
     if registered_user is None:
-        flash('Username or Password is invalid' , 'error')
+        flash('Username or Password is invalid' , 'danger')
         return redirect(url_for('login'))
     login_user(registered_user)
     flash('Logged in successfully')
-    return redirect(request.args.get('next') or url_for('index'))
+    return redirect(request.args.get('next') or url_for('dashboard'))
 
 #@app.route('/login', methods=['GET', 'POST'])
 #def login():
@@ -87,8 +96,9 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('logged_in', None)
-    flash('Logged out.', category="info")
+    #session.pop('logged_in', None)
+    logout_user()
+    flash('Successfully logged out.', category="info")
     return redirect(url_for('index'))
 
 
@@ -100,7 +110,7 @@ def signup():
     user = database.User(request.form['username'] , request.form['password'],request.form['email'])
     db.session.add(user)
     db.session.commit()
-    flash('User successfully registered')
+    flash('User successfully registered', category='success')
     return redirect(url_for('login'))
 
 @app.route('/dashboard')
