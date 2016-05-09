@@ -46,9 +46,11 @@ metadata = MetaData(naming_convention=convention)
 
 # Create tables.
 def init_db():
-    # import all modules here that might define models so that
-    # they will be registered properly on the metadata.  Otherwise
-    # you will have to import them first before calling init_db()
+    """
+    Import all modules here that might define models.
+    They will be registered properly on the metadata.
+    Otherwise you will have to import them first before calling init_db()
+    """
     import cerbereapp.models
     Base.metadata.create_all(bind=engine)
 
@@ -60,4 +62,7 @@ def seed_db():
     """
     import cerbereapp.models
     con = engine.connect()
+    con.execute(account_types.insert(), id=1, name='Premium')
+    con.execute(account_types.insert(), id=2, name='Basic')
+    con.execute(account_types.insert(), id=3, name='Guest')
     con.execute(users.insert(), username='admin', email='admin@cerbereapp.com', password='admin')

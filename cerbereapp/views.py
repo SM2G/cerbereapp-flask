@@ -3,13 +3,10 @@ from cerbereapp import app
 from flask import render_template, redirect, url_for, request, render_template\
                 , escape, flash, session, Flask, abort, g
 
-#from flask_wtf import Form
-#from wtforms import StringField
-#from wtforms.validators import DataRequired
 from cerbereapp.forms import *
 from functools import wraps
 from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
+#from werkzeug.security import generate_password_hash, check_password_hash
 
 import flask.ext.login as flask_login
 from flask_login import login_required, current_user, login_user , logout_user \
@@ -56,42 +53,29 @@ def before_request():
 def index():
     return render_template("index.html")
 
-#@app.route('/')
-#def index():
-#    #return '<html><body><h1>Hello <em>world</em></h1></body></html>'
-#    #return render_template('index.html')
-#    if 'username' in session:
-#        username=session['username']
-#        return render_template("index.html", username=username)
-#        #return 'Logged in as ' + username + "</br> <b><a href='/logout'>click here to log out</a></b>"
-#    return "You are not logged in <br><a href='/login'></b> click here to login</b></a>"
-
 
 @app.route('/login',methods=['GET','POST'])
 def login():
+    """
+    Authenticate users.
+    """
     if request.method == 'GET':
         return render_template('login.html')
     email = request.form['email']
     password = request.form['password']
-    registered_user = models.User.query.filter_by(email=email,password=password).first()
+    remember_me = False
+    if 'remember_me' in request.form:
+        remember_me = True
+    registered_user = models.User.query.filter_by(email=email).first()
     if registered_user is None:
-        flash('Username or Password is invalid' , 'danger')
+        flash('Invalid username' , category='danger')
         return redirect(url_for('login'))
-    login_user(registered_user)
-    flash('Logged in successfully')
+    if not registered_user.check_password(password):
+        flash('Invalid Password' , category='danger')
+        return redirect(url_for('login'))
+    login_user(registered_user, remember = remember_me)
+    flash('Logged in successfully', category='success')
     return redirect(request.args.get('next') or url_for('dashboard'))
-
-#@app.route('/login', methods=['GET', 'POST'])
-#def login():
-#    error = None
-#    if request.method == 'POST':
-#        if request.form['email'] != 'admin@admin.com' or request.form['password'] != 'admin':
-#            error = "Invalid credentials, please try again"
-#        else:
-#            session['logged_in'] = True
-#            flash('Successfully logged in!', category='success')
-#            return redirect(url_for('dashboard'))
-#    return render_template('login.html', error=error)
 
 
 @app.route('/logout')
@@ -102,37 +86,42 @@ def logout():
     return redirect(url_for('index'))
 
 
-
 @app.route('/signup' , methods=['GET','POST'])
 def signup():
     if request.method == 'GET':
         return render_template('signup.html')
-    user = database.User(request.form['username'] , request.form['password'],request.form['email'])
-    db.session.add(user)
-    db.session.commit()
+    user = models.User(request.form['username'], request.form['email'], request.form['password'])
+    database.db_session.add(user)
+    database.db_session.commit()
     flash('User successfully registered', category='success')
     return redirect(url_for('login'))
+
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
     return render_template('dashboard.html')
 
+
 @app.route('/employees')
 def employees():
     return render_template('student.html')
+
 
 @app.route('/profiles')
 def profiles():
     return render_template('student.html')
 
+
 @app.route('/sessions')
 def sessions():
     return render_template('student.html')
 
+
 @app.route('/students')
 def students():
     return render_template('student.html')
+
 
 @app.route('/student_result', methods=['POST', 'GET'])
 def student_result():
@@ -140,19 +129,23 @@ def student_result():
         result=request.form
         return render_template("table.html", result=result)
 
+
 @app.route('/hello/<int:score>')
 def hello_name(score):
     return render_template('hello.html', marks = score)
+
 
 @app.route('/result')
 def result():
     dict={'Olga':55,'Anya':24,'Tania':26,'Ivana':32,'Sonia':28,'Pussy':35,'Plenty':44}
     return render_template('table.html', result=dict)
 
+
 @app.route('/account/<name>')
 @login_required
 def account(name):
     return 'Welcome %s!' % name
+
 
 @app.route('/employee/<name>')
 @login_required

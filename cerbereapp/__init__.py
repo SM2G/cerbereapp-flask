@@ -15,7 +15,6 @@ app.config.from_object('config')
 app.config.from_pyfile('config.py')
 actual_env = 'DEV'
 
-
 from cerbereapp.database import db_session
 
 @app.teardown_appcontext
