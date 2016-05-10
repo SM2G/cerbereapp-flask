@@ -90,11 +90,12 @@ def logout():
 def signup():
     if request.method == 'GET':
         return render_template('signup.html')
+    password = request.form['password']
+    password_check = request.form['password_check']
     user = models.User(request.form['username']
                     , request.form['email']
-                    , request.form['password']
-                    , request.form['password_check'])
-    if user.password != user.password_check
+                    , request.form['password'])
+    if password != password_check:
         flash('Passwords mismatch' , category='danger')
         return redirect(url_for('signup'))
     database.db_session.add(user)
@@ -105,43 +106,43 @@ def signup():
 
 @app.route('/dashboard')
 @login_required
-def dashboard():
+def dashboard(user_id):
     return render_template('dashboard.html')
 
 
 @app.route('/employees')
 @login_required
-def employees():
+def employees(user_id):
     return render_template('student.html')
 
 
 @app.route('/employee/<int:employee_id>')
 @login_required
-def employees():
+def employee(employee_id, user_id):
     return render_template('student.html')
 
 
 @app.route('/profiles')
 @login_required
-def profiles():
+def profiles(user_id):
     return render_template('profiles.html')
 
 
 @app.route('/profile/<int:profile_id>')
 @login_required
-def employees():
+def profile(profile_id, user_id):
     return render_template('student.html')
 
 
 @app.route('/document_models')
 @login_required
-def sessions():
+def document_models(user_id):
     return render_template('document_models.html')
 
 
 @app.route('/document_model/<int:document_model_id>')
 @login_required
-def sessions():
+def document_model(document_model_id, user_id):
     return render_template('document_models.html')
 
 
@@ -188,5 +189,5 @@ def not_found_error(error):
 
 @app.errorhandler(500)
 def internal_error(error):
-    db_session.rollback()
+    session.rollback()
     return render_template('errors/500.html'), 500

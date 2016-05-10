@@ -71,5 +71,4 @@ def seed_db():
         {'user_id': 1, 'profile_name' : '1medic'},
         {'user_id': 2, 'profile_name' : '2recon'},
         {'user_id': 2, 'profile_name' : '2medic'}])
-    #db_session.execute(models.users.insert(), username='Robert', email='robert@cerbereapp.com', password='pbkdf2:sha1:1000$6b3BzWNu$b143b5ad6599fb04c97dc603aba70d1cdfa18c00')
     db_session.commit()

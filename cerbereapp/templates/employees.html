@@ -4,14 +4,15 @@
     <div class="row ">
         <table class="table table-striped table-hover">
             <tr>
-                <th>Profile Name</th>
-                <th>Documents</th>
-                <th>Employees assigned</th>
+                <th>Status</th>
+                <th>Name</th>
+                <th>Profile</th>
             </tr>
             {% for key, value in result.items() %}
             <tr>
-                <th>{{ key }}</th>
-                <td>{{ value }}</td>
+                <td>{{ status }}</td>
+                <th>{{ first_name }} {{ last_name }}</th>
+                <td>{{ profile_name }}</td>
             </tr>
             {% endfor %}
         </table>
