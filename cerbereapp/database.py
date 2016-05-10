@@ -2,7 +2,7 @@
 #!/usr/bin/env python
 
 from flask import Flask
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine, MetaData, select, insert, update, delete
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
@@ -60,9 +60,16 @@ def seed_db():
 
     Use this to populate the database with some sample data.
     """
-    import cerbereapp.models
+    import cerbereapp.models as models
     con = engine.connect()
-    con.execute(account_types.insert(), id=1, name='Premium')
-    con.execute(account_types.insert(), id=2, name='Basic')
-    con.execute(account_types.insert(), id=3, name='Guest')
-    con.execute(users.insert(), username='admin', email='admin@cerbereapp.com', password='admin')
+    con.execute(models.account_type.insert(), [
+        {'Guest'},
+        {'Premium'},
+        {'Free'}])
+    db_session.execute(models.profiles.insert(), [
+        {'user_id': 1, 'profile_name' : '1recon'},
+        {'user_id': 1, 'profile_name' : '1medic'},
+        {'user_id': 2, 'profile_name' : '2recon'},
+        {'user_id': 2, 'profile_name' : '2medic'}])
+    #db_session.execute(models.users.insert(), username='Robert', email='robert@cerbereapp.com', password='pbkdf2:sha1:1000$6b3BzWNu$b143b5ad6599fb04c97dc603aba70d1cdfa18c00')
+    db_session.commit()

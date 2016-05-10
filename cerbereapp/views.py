@@ -110,7 +110,7 @@ def employees():
 
 @app.route('/profiles')
 def profiles():
-    return render_template('student.html')
+    return render_template('profiles.html')
 
 
 @app.route('/sessions')
