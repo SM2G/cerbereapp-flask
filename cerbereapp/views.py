@@ -1,27 +1,23 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/env python
+
 from cerbereapp import app
 from flask import render_template, redirect, url_for, request, render_template\
                 , escape, flash, session, Flask, abort, g
-
-from cerbereapp.forms import *
 from functools import wraps
 from datetime import datetime
-#from werkzeug.security import generate_password_hash, check_password_hash
-
 import flask.ext.login as flask_login
 from flask_login import login_required, current_user, login_user , logout_user \
                         , LoginManager
-
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-import cerbereapp.database as database
-import cerbereapp.models as models
+from cerbereapp.forms import *
+from cerbereapp import app
 
 ## Login Decorator
 ## ==================================================
-
 @login_manager.user_loader
 def load_user(id):
     """Given *user_id*, return the associated User object.
@@ -32,6 +28,7 @@ def load_user(id):
     #return models.User.get(models.User.id == id)
     #except:
     #    return None
+
 
 @app.before_request
 def before_request():
@@ -56,9 +53,7 @@ def index():
 
 @app.route('/login',methods=['GET','POST'])
 def login():
-    """
-    Authenticate users.
-    """
+    """ Authenticate users. """
     if request.method == 'GET':
         return render_template('login.html')
     email = request.form['email']
@@ -80,7 +75,6 @@ def login():
 
 @app.route('/logout')
 def logout():
-    #session.pop('logged_in', None)
     logout_user()
     flash('Successfully logged out.', category="info")
     return redirect(url_for('index'))

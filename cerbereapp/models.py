@@ -3,7 +3,6 @@
 
 from sqlalchemy import Column, Integer, String, Date, DateTime, Binary\
                     , PrimaryKeyConstraint, ForeignKeyConstraint, ForeignKey
-
 import flask.ext.login as flask_login
 from flask_login import UserMixin, current_user, login_user , logout_user \
                         , LoginManager
