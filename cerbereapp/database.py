@@ -2,7 +2,10 @@
 #!/usr/bin/env python
 
 from flask import Flask
-from sqlalchemy import create_engine, MetaData, select, insert, update, delete
+from sqlalchemy import create_engine, MetaData, Column, Integer, String, Date\
+                    , DateTime, Binary\
+                    , PrimaryKeyConstraint, ForeignKeyConstraint, ForeignKey
+from sqlalchemy.sql import select, insert, update, delete
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base

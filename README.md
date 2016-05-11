@@ -27,12 +27,15 @@ $ pip install -f requirements.txt
 $ cp config.py.sample config.py # and edit it
 $ python runserver
 ```
+## Milestones
++ Mysql database support
++ SQLAlchemy ORM
++ Salted SHA1 password storage
 
 ## Features Roadmap
 + ~~Login/logout~~
-+ Mysql database support
++ ~~Encrypted password storage~~
 + Account managment
-+ Encrypted password storage
 + Add/remove/manage document models
 + Add/remove/manage profiles
 + Add/remove/manage employees

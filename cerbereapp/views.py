@@ -106,7 +106,7 @@ def signup():
 
 @app.route('/dashboard')
 @login_required
-def dashboard(user_id):
+def dashboard():
     return render_template('dashboard.html')
 
 
@@ -125,7 +125,8 @@ def employee(employee_id, user_id):
 @app.route('/profiles')
 @login_required
 def profiles(user_id):
-    return render_template('profiles.html')
+    database.db_session.select([users]).where(users)
+    return render_template('profiles.html', result=dict)
 
 
 @app.route('/profile/<int:profile_id>')
