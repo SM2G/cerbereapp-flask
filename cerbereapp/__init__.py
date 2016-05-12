@@ -6,18 +6,16 @@ import configparser
 
 app = Flask(__name__, instance_relative_config=True)
 
-import cerbereapp.database
-import cerbereapp.forms
-import cerbereapp.models
-#import cerbereapp.tests Work in progress
-import cerbereapp.views
+import cerbereapp.database as database
+#import cerbereapp.forms as forms
+import cerbereapp.models as models
+#import cerbereapp.tests as tests Work in progress
+import cerbereapp.views as views
 
 app.config.from_object('config')
 app.config.from_pyfile('config.py')
 actual_env = 'DEV'
 
-#from cerbereapp.database import db_session
-
 @app.teardown_appcontext
 def shutdown_session(exception=None):
-    db_session.remove()
+    database.db_session.remove()

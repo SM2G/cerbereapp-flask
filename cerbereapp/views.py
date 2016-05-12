@@ -47,6 +47,7 @@ def before_request():
 ## Routes
 ## ==================================================
 @app.route('/')
+@app.route('/index')
 def index():
     return render_template("index.html")
 
@@ -107,7 +108,7 @@ def dashboard():
 @app.route('/employees')
 @login_required
 def employees(user_id):
-    return render_template('student.html')
+    return render_template('student.html', result=dict)
 
 
 @app.route('/employee/<int:employee_id>')
@@ -132,7 +133,7 @@ def profile(profile_id, user_id):
 @app.route('/document_models')
 @login_required
 def document_models(user_id):
-    return render_template('document_models.html')
+    return render_template('document_models.html', result=dict)
 
 
 @app.route('/document_model/<int:document_model_id>')

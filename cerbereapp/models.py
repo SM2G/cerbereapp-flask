@@ -9,12 +9,11 @@ from flask_login import UserMixin, current_user, login_user , logout_user \
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
-from cerbereapp.database import Base
-
+import cerbereapp.database as database
 
 ## Models
 ## ==================================================
-class User(Base, UserMixin):
+class User(database.Base, UserMixin):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
@@ -54,14 +53,14 @@ class User(Base, UserMixin):
         return '<User %r>' % (self.username)
 
 
-class AccountType(Base):
+class AccountType(database.Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'account_types'
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
 
 
-class Employee(Base):
+class Employee(database.Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'employees'
     id = Column(Integer, primary_key=True)
@@ -71,7 +70,7 @@ class Employee(Base):
     profile_id = Column(Integer, nullable=False)
 
 
-class Profile(Base):
+class Profile(database.Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'profiles'
     id = Column(Integer, primary_key=True)
@@ -79,7 +78,7 @@ class Profile(Base):
     profile_name = Column(String(50), nullable=False)
 
 
-class DocumentModel(Base):
+class DocumentModel(database.Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'document_models'
     id = Column(Integer, primary_key=True)
@@ -89,7 +88,7 @@ class DocumentModel(Base):
     critical_days = Column(Integer, nullable=False)
 
 
-class Document(Base):
+class Document(database.Base):
     __table_args__ = {'extend_existing': True}
     __tablename__ = 'documents'
     id = Column(Integer, primary_key=True)

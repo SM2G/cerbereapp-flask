@@ -58,7 +58,7 @@ def init_db():
     Base.metadata.create_all(bind=engine)
 
 def seed_db():
-    """ Injects sample data into the database. """
+    """ Insert sample data into the database. """
     import cerbereapp.models as models
     con = engine.connect()
     con.execute(models.account_type.insert(), [
