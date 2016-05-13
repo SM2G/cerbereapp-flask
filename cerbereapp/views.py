@@ -2,6 +2,7 @@
 #!/usr/bin/env python
 
 from cerbereapp import app
+from cerbereapp import models
 from flask import render_template, redirect, url_for, request, render_template\
                 , escape, flash, session, Flask, abort, g
 from functools import wraps
@@ -13,8 +14,7 @@ login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-from cerbereapp.forms import *
-from cerbereapp import app
+#from cerbereapp.forms import *
 
 ## Login Decorator
 ## ==================================================
