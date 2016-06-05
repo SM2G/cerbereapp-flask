@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
-from cerbereapp import app
+from cerbereapp import app, database
 from cerbereapp import models
 from flask import render_template, redirect, url_for, request, render_template\
                 , escape, flash, session, Flask, abort, g

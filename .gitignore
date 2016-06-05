@@ -6,6 +6,7 @@
 /cerbereapp/__pycache__/
 
 # Config files
-/instance
+/instance/config.py
+/instance/db-config.ini
 /config
 config.py
